@@ -6,6 +6,7 @@ import { editorToolNames } from 'api-types';
 import { aiGatewayToolNames } from '../tool-names';
 import { AudioService } from '../../audio/audio.service';
 import { RealtimeService } from '../../realtime/realtime.service';
+import { TwelveLabsService } from '../../video-analysis/twelve-labs/twelve-labs.service';
 import type { ToolsContext, ToolDependencies, ActionToolDependencies } from './tool-creators';
 import {
   // Plan tools
@@ -35,6 +36,8 @@ import {
   // Transcription tools
   createGetTranscriptionTool,
   createInvestigateTranscriptionTool,
+  // Footage analysis tools
+  createAnalyzeFootageTool,
   // Data tools
   createGetProjectStateTool,
   createGetItemsDataTool,
@@ -55,6 +58,7 @@ export class ToolsService {
     private readonly realtimeService: RealtimeService,
     private readonly audioService: AudioService,
     private readonly configService: ConfigService,
+    private readonly twelveLabsService: TwelveLabsService,
   ) {}
 
   getTools(context?: ToolsContext): Record<string, Tool> {
@@ -82,6 +86,8 @@ export class ToolsService {
       // Transcription tools
       [editorToolNames.getTranscription]: createGetTranscriptionTool(deps, context),
       [aiGatewayToolNames.investigateTranscription]: createInvestigateTranscriptionTool(deps, context),
+      // Footage analysis tools
+      [aiGatewayToolNames.analyzeFootage]: createAnalyzeFootageTool(deps),
       // Data tools
       [editorToolNames.getProjectState]: createGetProjectStateTool(deps, context),
       [editorToolNames.getItemsData]: createGetItemsDataTool(deps, context),
@@ -111,6 +117,9 @@ export class ToolsService {
       realtimeService: this.realtimeService,
       waitForToolResult: this.waitForToolResult.bind(this),
       getLanguageModel: (modelId) => gateway(modelId),
+      footageAnalyzer: {
+        analyzeVideo: (args) => this.twelveLabsService.analyzeVideo(args),
+      },
       logger: {
         log: this.logger.log.bind(this.logger),
         warn: this.logger.warn.bind(this.logger),

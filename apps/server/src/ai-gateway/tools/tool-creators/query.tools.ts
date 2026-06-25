@@ -250,6 +250,13 @@ export function createGetLibraryAssetsDataTool(
         );
         if (status) lines.push(`- status: ${status}`);
 
+        const twelveLabs = asset.twelveLabs as Record<string, unknown> | undefined;
+        if (twelveLabs && typeof twelveLabs.videoId === 'string' && twelveLabs.videoId.length > 0) {
+          lines.push(
+            `- twelveLabsVideoId: ${twelveLabs.videoId} (pass to analyze_footage for visual questions)`,
+          );
+        }
+
         const summary = asset.summary as Record<string, unknown> | undefined;
         const summaryError = typeof asset.summaryError === 'string' ? asset.summaryError.trim() : undefined;
 

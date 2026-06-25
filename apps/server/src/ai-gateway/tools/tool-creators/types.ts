@@ -40,6 +40,12 @@ export type ToolsContext = {
   reportSubagentDebugEvent?: (event: ChatStreamSubagentDebugEvent) => void;
 };
 
+// Minimal structural contract for the TwelveLabs footage analyzer used by tools.
+// Kept structural so tool-creators stay decoupled from the Nest service module.
+export type FootageAnalyzer = {
+  analyzeVideo: (args: { videoId?: string; videoUrl?: string; prompt: string }) => Promise<string>;
+};
+
 export type ToolDependencies = {
   realtimeService: RealtimeService;
   waitForToolResult: (
@@ -47,6 +53,7 @@ export type ToolDependencies = {
     timeoutMs?: number,
   ) => Promise<ReportToolResultRequest | { status: 'timeout'; toolCallId: string }>;
   getLanguageModel: (modelId: string) => LanguageModel;
+  footageAnalyzer?: FootageAnalyzer;
   logger?: {
     log: (message: string, ...args: unknown[]) => void;
     warn: (message: string, ...args: unknown[]) => void;
@@ -264,6 +271,20 @@ export type InvestigateTranscriptionResult = {
   minutes?: number[];
   modelId?: string;
   fallbackUsed?: boolean;
+  note?: string;
+  error?: string;
+};
+
+export type AnalyzeFootageInput = {
+  prompt: string;
+  videoId: string;
+  reason?: string;
+};
+
+export type AnalyzeFootageResult = {
+  status: 'completed' | 'skipped' | 'error';
+  videoId?: string;
+  answer?: string;
   note?: string;
   error?: string;
 };

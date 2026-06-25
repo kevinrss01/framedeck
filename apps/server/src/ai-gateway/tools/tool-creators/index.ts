@@ -3,6 +3,9 @@ export type {
   ToolsContext,
   ToolDependencies,
   ActionToolDependencies,
+  FootageAnalyzer,
+  AnalyzeFootageInput,
+  AnalyzeFootageResult,
   SelectTimelineItemsInput,
   SelectTimelineItemsResult,
   PlaceLibraryAssetsOnTimelineInput,
@@ -89,6 +92,9 @@ export {
 } from './query.tools';
 
 export { createInvestigateTranscriptionTool } from './transcription-investigation.tools';
+
+// Footage analysis tools
+export { createAnalyzeFootageTool } from './analyze-footage.tools';
 
 // Editing tools
 export { createRemoveSilencesTool, createSetCaptionsTool } from './editing.tools';
