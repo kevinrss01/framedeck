@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import api from '@/utils/services/api-frontend';
-import type { VideoAnalysisSummary } from 'api-types';
+import type { TwelveLabsVideoReference, VideoAnalysisSummary } from 'api-types';
 import { editorToolNames } from 'api-types';
 import { useLibraryAssets } from '../library';
 import { useAssetStatus } from '../utils/use-context';
@@ -21,6 +21,7 @@ type LibraryAssetData = {
   isReadyForPlacement: boolean;
   summary?: VideoAnalysisSummary;
   summaryError?: string;
+  twelveLabs?: TwelveLabsVideoReference;
 };
 
 export const useGetLibraryAssetsData = () => {
@@ -65,6 +66,10 @@ export const useGetLibraryAssetsData = () => {
         asset.type === 'video' && 'summaryError' in asset && typeof asset.summaryError === 'string'
           ? asset.summaryError
           : undefined;
+      const twelveLabs =
+        asset.type === 'video' && 'twelveLabs' in asset
+          ? (asset.twelveLabs as TwelveLabsVideoReference | undefined)
+          : undefined;
 
       return {
         assetId: asset.id,
@@ -78,6 +83,7 @@ export const useGetLibraryAssetsData = () => {
         isReadyForPlacement: simplifiedStatus === 'ready',
         summary,
         summaryError,
+        twelveLabs,
       };
     });
   }, [assetStatus, libraryAssets]);

@@ -86,6 +86,10 @@ export class PromptsService {
     - get_transcription prepares transcription in the timeline and returns compact status metadata plus a readable transcript generalization
     - investigate_transcription is the preferred tool for transcript-heavy research (bad takes, repeated attempts, quote search, locating spoken moments). It's like a employee that you use to investigate.
 
+    ## Footage analysis tool
+    - analyze_footage asks TwelveLabs Pegasus a natural-language question about the VISUAL content of an indexed video (scenes, objects, people, actions, locations, on-screen text, or finding a moment that matches a description).
+    - Pass the twelveLabsVideoId from get_library_assets_data. Use this for visual questions; use investigate_transcription for spoken words.
+
     # Response guidelines
     - Be concise, use the same language as the user
     - Suggest uploading assets if project is empty

@@ -60,6 +60,8 @@ Asset status flows through `pending-upload`, `uploading`, `transcribing`, `ready
 
 The chat assistant streams through the server-side AI Gateway. Tools from `ToolsService` emit realtime start/progress/result events, and frontend editor bridge handlers apply validated edits back to the timeline.
 
+The `analyze_footage` tool lets the assistant ask TwelveLabs Pegasus a natural-language question about the visual content of an already-indexed clip (scenes, objects, on-screen action, or finding the moment that matches a description) before planning timeline edits. It reuses the videos indexed at upload, so no extra configuration is needed beyond the existing `12LABS_API_KEY`.
+
 ## Getting started
 
 ### Prerequisites
